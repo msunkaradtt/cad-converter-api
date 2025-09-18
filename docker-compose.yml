@@ -1,0 +1,44 @@
+# docker-compose.yml
+services:
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - cad-converter-network
+
+  api:
+    build: .
+    container_name: api
+    command: uvicorn cad_converter_service.api.main:app --host 0.0.0.0 --port 8000
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data  # Persistent storage for files
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - cad-converter-network
+
+  worker:
+    build: .
+    container_name: worker
+    command: celery -A cad_converter_service.worker.tasks.celery_app worker --loglevel=info
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data  # Worker needs access to the same files
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - cad-converter-network
+
+networks:
+  cad-converter-network:
+    name: cad-converter-network
+    driver: bridge

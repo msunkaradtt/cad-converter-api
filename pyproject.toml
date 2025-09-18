@@ -1,0 +1,22 @@
+# pyproject.toml
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cad-converter-service"
+version = "0.1.0"
+description = "An API service to convert 3D/CAD files to GLB using Dockerized FreeCAD."
+requires-python = ">=3.8"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "celery",
+    "redis",
+    "python-multipart", # For file uploads in FastAPI
+    "trimesh[easy]>=4.0.0",
+    "cascadio"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
