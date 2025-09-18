@@ -1,5 +1,3 @@
-Of course. Here is a comprehensive, technical README file that documents the project we have built.
-
 -----
 
 # CAD Converter API Service
