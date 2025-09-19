@@ -3,13 +3,29 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 from celery.result import AsyncResult
 import uuid
-import os # <-- Added os import
+import os
+
+from fastapi.middleware.cors import CORSMiddleware
 
 # --- FIX: Import the task AND the celery_app instance ---
 from ..worker.tasks import conversion_task, celery_app
 from ..config import UPLOAD_DIR, CONVERTED_DIR
 
-app = FastAPI(title="CAD Conversion Service")
+app = FastAPI(title="2GLB API by MSunkara")
+
+origins = [
+    "http://localhost:5173", # The origin of your React frontend
+    "http://localhost:3000", # A common alternative for React dev servers
+    "https://server.filetoglb.msunkara.de"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/convert", status_code=202)
 def start_conversion(file: UploadFile = File(...)):
