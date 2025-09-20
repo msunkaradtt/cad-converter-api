@@ -10,7 +10,9 @@ REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 DATA_DIR = Path("/app/data")
 UPLOAD_DIR = DATA_DIR / "uploads"
 CONVERTED_DIR = DATA_DIR / "converted"
+TEMP_DIR = DATA_DIR / "temp"
 
 # Create directories if they don't exist
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 CONVERTED_DIR.mkdir(parents=True, exist_ok=True)
+TEMP_DIR.mkdir(parents=True, exist_ok=True)
