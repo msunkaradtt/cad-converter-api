@@ -16,7 +16,7 @@ app = FastAPI(title="2GLB API by MSunkara")
 origins = [
     "http://localhost:5173", # The origin of your React frontend
     "http://localhost:3000", # A common alternative for React dev servers
-    "https://server.filetoglb.msunkara.de"
+    "https://tools.msunkara.de"
 ]
 
 app.add_middleware(
